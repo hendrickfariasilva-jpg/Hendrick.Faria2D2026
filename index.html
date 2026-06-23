@@ -1,0 +1,443 @@
+html_content = """<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submarinos: Engenharia, História e Exploração Extrema</title>
+    <style>
+        /* Variáveis de Cores - Paleta Deep Ocean */
+        :root {
+            --bg-color: #0b131f;
+            --container-bg: #111b2d;
+            --accent-blue: #00d2ff;
+            --accent-green: #00ffcc;
+            --text-main: #e2e8f0;
+            --text-muted: #94a3b8;
+            --border-color: #1e293b;
+            --highlight: #f59e0b;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+            padding: 40px 20px;
+            background: linear-gradient(180deg, #112240 0%, #0b131f 100%);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            color: var(--accent-blue);
+            margin-bottom: 10px;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        section {
+            background-color: var(--container-bg);
+            padding: 30px;
+            margin-bottom: 40px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            color: var(--accent-green);
+            margin-bottom: 25px;
+            border-left: 4px solid var(--accent-blue);
+            padding-left: 15px;
+        }
+
+        /* 2. Timeline Styles */
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+            border-left: 2px solid var(--border-color);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 30px;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -37px;
+            top: 5px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: var(--accent-blue);
+            border: 2px solid var(--bg-color);
+            transition: all 0.3s ease;
+        }
+
+        .timeline-item:hover::before {
+            background-color: var(--accent-green);
+            transform: scale(1.3);
+        }
+
+        .timeline-date {
+            font-weight: bold;
+            color: var(--accent-blue);
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+
+        .timeline-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .timeline-desc {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* 5. Tabela Comparativa Responsiva */
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            margin-top: 20px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.95rem;
+        }
+
+        th, td {
+            padding: 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            background-color: #1e293b;
+            color: var(--accent-green);
+            font-weight: 600;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:nth-child(even) {
+            background-color: rgba(255, 255, 255, 0.02);
+        }
+
+        /* 6. Destaques Numéricos e Comparação */
+        .comparison-box {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        @media (min-width: 600px) {
+            .comparison-box {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .comp-card {
+            background-color: rgba(255, 255, 255, 0.03);
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        .comp-card h3 {
+            color: var(--accent-blue);
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            margin-top: 25px;
+        }
+
+        @media (min-width: 600px) {
+            .stats-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        .stat-card {
+            background: linear-gradient(145deg, #162238, #111b2d);
+            padding: 25px 20px;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid var(--border-color);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--highlight);
+            line-height: 1;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* 8. Accordion (Sanfona) */
+        .accordion-item {
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            margin-bottom: 15px;
+            overflow: hidden;
+        }
+
+        .accordion-header {
+            width: 100%;
+            background-color: #1e293b;
+            color: var(--text-main);
+            padding: 18px 20px;
+            text-align: left;
+            border: none;
+            outline: none;
+            font-size: 1.05rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background-color 0.2s ease;
+        }
+
+        .accordion-header:hover {
+            background-color: #24334d;
+        }
+
+        .accordion-header::after {
+            content: '+';
+            font-size: 1.4rem;
+            color: var(--accent-blue);
+            transition: transform 0.3s ease;
+        }
+
+        .accordion-item.active .accordion-header::after {
+            content: '−';
+            transform: rotate(180deg);
+        }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            background-color: rgba(255, 255, 255, 0.01);
+            transition: max-height 0.3s ease-out, padding 0.3s ease;
+        }
+
+        .accordion-item.active .accordion-content {
+            padding: 20px;
+            max-height: 500px; /* Valor seguro para expansão */
+            border-top: 1px solid var(--border-color);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <header>
+            <h1>Imersão Subaquática</h1>
+            <p>Explorando a engenharia, os segredos históricos e os limites abissais dos submarinos.</p>
+        </header>
+
+        <section id="evolucao">
+            <h2>2. A Evolução Histórica: Dos "Barris de Madeira" aos Monstros Nucleares</h2>
+            <div class="timeline">
+                
+                <div class="timeline-item">
+                    <div class="timeline-date">1775</div>
+                    <div class="timeline-title">O Turtle (A Tartaruga)</div>
+                    <div class="timeline-desc">Criado durante a Revolução Americana, era um veículo de madeira operado por uma única pessoa através de manivelas. Semelhante a um grande barril, foi o primeiro submarino usado em combate na história.</div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-date">1900</div>
+                    <div class="timeline-title">USS Holland</div>
+                    <div class="timeline-desc">O primeiro submarino oficial da Marinha dos EUA a integrar motores a combustão para navegar na superfície e baterias elétricas para a navegação submersa, servindo de base para o design do século XX.</div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-date">1914 — 1945</div>
+                    <div class="timeline-title">As Grandes Guerras (U-Boats)</div>
+                    <div class="timeline-desc">Os submarinos tornam-se armas estratégicas fundamentais. Movidos a diesel-eletricidade, focavam em longos períodos de patrulha, bloqueios navais e ataques furtivos em matilhas.</div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-date">1954</div>
+                    <div class="timeline-title">USS Nautilus</div>
+                    <div class="timeline-desc">A revolução nuclear. O primeiro submarino movido por um reator atómico quebrou todos os recordes de velocidade e autonomia, operando por meses sem regressar à superfície e cruzando o Polo Norte por baixo do gelo.</div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-date">Século XXI</div>
+                    <div class="timeline-title">Os Titãs Modernos</div>
+                    <div class="timeline-desc">Monstros modernos com cascos hidrodinâmicos avançados, ligas de titânio ou aço de alta resistência, sonares digitais esféricos e capacidade furtiva quase indetectável.</div>
+                </div>
+
+            </div>
+        </section>
+
+        <section id="comparativo">
+            <h2>5. Submarinos Nucleares vs. Convencionais: Qual a Diferença?</h2>
+            <p style="color: var(--text-muted); margin-bottom: 15px;">Os submarinos convencionais operam no limite das suas baterias, enquanto os gigantes nucleares desafiam o tempo no fundo do oceano.</p>
+            
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Característica</th>
+                            <th>Submarinos Convencionais (Diesel-Elétricos)</th>
+                            <th>Submarinos Nucleares</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <strong><td>Propulsão</td></strong>
+                            <td>Motores a diesel (superfície) + Baterias elétricas (submerso).</td>
+                            <td>Reator nuclear (geração contínua de calor e vapor para turbinas).</td>
+                        </tr>
+                        <tr>
+                            <strong><td>Autonomia</td></strong>
+                            <td><strong>Poucos dias ou semanas.</strong> Precisa de vir à superfície ou usar o <em>snorkel</em> para captar oxigénio e recarregar baterias.</td>
+                            <td><strong>Praticamente ilimitada.</strong> O reator gera energia e oxigénio. O único limite real é o stock de comida para a tripulação.</td>
+                        </tr>
+                        <tr>
+                            <strong><td>Nível de Ruído</td></strong>
+                            <td><span style="color: var(--accent-green); font-weight:600;">Extremamente silencioso</span> quando opera apenas nas baterias, tornando-se quase indetectável.</td>
+                            <td>Silencioso, contudo as bombas de refrigeração do reator nuclear geram um ruído residual contínuo.</td>
+                        </tr>
+                        <tr>
+                            <strong><td>Missão e Custo</td></strong>
+                            <td>Mais económicos para construir e manter. Ideais para defesa costeira e emboscadas em águas rasas.</td>
+                            <td>Custo astronómico. Projetados para projeção de poder global e patrulhas transoceânicas de longa duração.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="exploracao">
+            <h2>6. O Ponto Mais Profundo da Terra: Os Submersíveis de Exploração</h2>
+            
+            <div class="comparison-box">
+                <div class="comp-card">
+                    <h3>Submarino</h3>
+                    <p class="timeline-desc">Uma embarcação totalmente autónoma, capaz de zarpar de um porto, cumprir a sua missão em alto mar e regressar à base utilizando os seus próprios meios de propulsão e energia.</p>
+                </div>
+                <div class="comp-card">
+                    <h3>Submersível</h3>
+                    <p class="timeline-desc">Possui mobilidade e reservas de energia limitadas. Depende obrigatoriamente de um "navio-mãe" à superfície para o transportar, lançar à água, monitorizar e recuperar após o mergulho.</p>
+                </div>
+            </div>
+
+            <p style="margin-bottom: 10px;">A incrível jornada até à Fossa das Marianas:</p>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">~11 km</div>
+                    <div class="stat-label">Profundidade do <strong>Challenger Deep</strong>. Supera a altura do Monte Everest com mais de 2 km de sobra.</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">1.000x</div>
+                    <div class="stat-label">Aumento da pressão hidrostática em relação ao nível do mar. O equivalente a empilhar elefantes sobre um centímetro quadrado.</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">10.928m</div>
+                    <div class="stat-label">Recorde atingido pelo <strong>Limiting Factor</strong> (2019), encontrando ecossistemas vivos na escuridão total.</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="curiosidades">
+            <h2>8. Curiosidades Rápidas: Fatos e Mitos Subaquáticos</h2>
+            
+            <div class="accordion">
+                
+                <div class="accordion-item">
+                    <button class="accordion-header">O que acontece se um submarino bater numa baleia?</button>
+                    <div class="accordion-content">
+                        <p class="timeline-desc">Embora os sonares modernos tentem evitar estas colisões, acidentes raros já aconteceram. O casco de aço ou titânio super-resistente do submarino costuma sofrer apenas danos superficiais (como arranhões nas placas anecoicas), mas para o animal o impacto é quase sempre fatal ou grave devido à massa da embarcação.</p>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <button class="accordion-header">A pressão da água pode esmagar um submarino num piscar de olhos?</button>
+                    <div class="accordion-content">
+                        <p class="timeline-desc">Sim. Se um submarino ultrapassar a sua "profundidade de colapso" (crushing depth), a estrutura falha por implosão instantânea. A pressão é tão avassaladora que o casco colapsa em milissegundos, gerando calor extremo e destruição total muito antes de o sistema nervoso humano conseguir processar o evento.</p>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <button class="accordion-header">Os submarinos usam janelas de vidro para a tripulação ver o exterior?</button>
+                    <div class="accordion-content">
+                        <p class="timeline-desc">Não. Submarinos militares não possuem qualquer janela ou vigia no casco. O vidro representaria um ponto de fraqueza estrutural crítico sob pressões elevadas. A navegação é feita de forma totalmente cega, recorrendo a cartas digitais tridimensionais, sistemas inerciais e, essencialmente, aos "olhos acústicos" da embarcação: o <strong>sonar</strong>.</p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        document.querySelectorAll('.accordion-header').forEach(button => {
+            button.addEventListener('click', () => {
+                const accordionItem = button.parentElement;
+                
+                // Fecha outros itens se desejar o efeito de apenas um aberto (opcional)
+                document.querySelectorAll('.accordion-item').forEach(item => {
+                    if (item !== accordionItem) {
+                        item.classList.remove('active');
+                    }
+                });
+
+                // Alterna o estado do item atual
+                accordionItem.classList.toggle('active');
+            });
+        });
+    </script>
+</body>
+</html>
+"""
